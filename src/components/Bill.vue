@@ -402,7 +402,6 @@ export default {
 
       let res = await fetch("http://167.99.138.67:3322/generate", {
         method: 'POST',
-        mode: 'no-cors',
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         },
