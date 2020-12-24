@@ -15,7 +15,7 @@ console.log('SERVER LISTENING TO PORT: ' + port)
 // SEND STATIC
 const staticLimiter = rateLimit({
     windowMs: 10 * 60 * 1000, // 15 minutes
-    max: 20
+    max: 200
 });
 app.use(staticLimiter)
 
