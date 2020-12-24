@@ -6,7 +6,7 @@ const path = require('path')
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 
-const port = 1111
+const port = 3322
 app.listen(port)
 app.use(bodyParser.urlencoded({extended: true, limit: "1mb"}));
 app.use(helmet());

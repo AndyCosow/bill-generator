@@ -400,7 +400,7 @@ export default {
         'html': billHtml.outerHTML,
       })
 
-      let res = await fetch("http://167.99.138.67:1111/generate", {
+      let res = await fetch("http://167.99.138.67:3322/generate", {
         method: 'POST',
         mode: 'no-cors',
         headers: {
