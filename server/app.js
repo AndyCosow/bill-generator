@@ -35,7 +35,7 @@ const apiLimiter = rateLimit({
 
 app.post('/generate', apiLimiter, (req, res) => {
     // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://bills.lt');
+    res.setHeader('Access-Control-Allow-Origin', 'http://bills.lt/');
 
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'POST');
