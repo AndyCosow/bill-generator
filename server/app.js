@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({extended: true, limit: "1mb"}));
 //app.use(helmet());
 console.log('SERVER LISTENING TO PORT: ' + port)
 
+
 // SEND STATIC
 const staticLimiter = rateLimit({
     windowMs: 10 * 60 * 1000, // 15 minutes
@@ -33,6 +34,12 @@ const apiLimiter = rateLimit({
 });
 
 app.post('/generate', apiLimiter, (req, res) => {
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', 'http://bills.lt');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'POST');
+
     return formPdf(req.body.html, res)
 })
 
