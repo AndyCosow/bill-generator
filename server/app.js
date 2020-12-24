@@ -9,9 +9,8 @@ const helmet = require("helmet");
 const port = 3322
 app.listen(port)
 app.use(bodyParser.urlencoded({extended: true, limit: "1mb"}));
-app.use(helmet());
+//app.use(helmet());
 console.log('SERVER LISTENING TO PORT: ' + port)
-
 
 // SEND STATIC
 const staticLimiter = rateLimit({
