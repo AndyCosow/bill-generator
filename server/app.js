@@ -41,10 +41,6 @@ function formPdf(html, res) {
     let file = {content: html};
 
     html_to_pdf.generatePdf(file, options).then(() => {
-        res.sendFile('file.pdf', { root: path.join(__dirname)}, (err) => {
-            if(err) {
-                console.log(err)
-            }
-        })
+        res.download('file.pdf')
     });
 }
