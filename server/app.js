@@ -5,11 +5,13 @@ const html_to_pdf = require('html-pdf-node');
 const path = require('path')
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
+const cors = require('cors')
 
 const port = 3322
 app.listen(port)
 app.use(bodyParser.urlencoded({extended: true, limit: "1mb"}));
 //app.use(helmet());
+app.use(cors({origin: "http://bills.lt"}))
 console.log('SERVER LISTENING TO PORT: ' + port)
 
 
@@ -34,11 +36,11 @@ const apiLimiter = rateLimit({
 });
 
 app.post('/generate', apiLimiter, (req, res) => {
-    // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://bills.lt/');
-
-    // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'POST');
+    // // Website you wish to allow to connect
+    // res.setHeader('Access-Control-Allow-Origin', 'http://bills.lt/');
+    //
+    // // Request methods you wish to allow
+    // res.setHeader('Access-Control-Allow-Methods', 'POST');
 
     return formPdf(req.body.html, res)
 })
