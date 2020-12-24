@@ -1,0 +1,54 @@
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    background-color: #2a2a2a;
+}
+
+.d-flex {
+    display: flex;
+}
+.j-center {
+    justify-content: center;
+}
+
+.container  {
+    max-width: 800px;
+    background-color: #e2e2e2;
+}
+
+
+.firstText {
+    padding: 0 30px;
+    margin-top: 50px;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 25px;
+}
+
+.christ {
+    max-width: 100%;
+}
+
+.hollyButton {
+    font-size: 25px;
+    font-weight: 400;
+    font-family: 'Poppins', sans-serif;
+    margin: 50px;
+    background-color: #2a2a2a;
+    color: #ffffff;
+    padding: 30px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.hollyButton:hover {
+    transform: scale(1.1);
+}
+
+a {
+    text-decoration: none;
+}
+
+
