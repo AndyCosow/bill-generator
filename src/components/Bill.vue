@@ -408,8 +408,6 @@ export default {
         body: setHtml
       });
 
-      console.log(res)
-
       if(res.status === 200) {
         let blob = await res.blob()
 
