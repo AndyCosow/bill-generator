@@ -2,7 +2,7 @@
 
   <div id="bill" style="font-family: Arial,serif; padding: 20px;">
 
-    <h3>PVM SĄSKAITA-FAKTŪRA</h3>
+    <h3>{{bill.name[0]}}</h3>
     <h3>{{bill.id[0]}}</h3>
     <div>{{bill.date[0]}}</div>
 

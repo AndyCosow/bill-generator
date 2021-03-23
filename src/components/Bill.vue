@@ -1,106 +1,102 @@
 <template>
   <div class="container">
     <div class="main">
-      <h2 @click="getBody">PVM SĄSKAITA FAKTŪRA</h2>
 
-      <div class="w-300">
-        <div v-if="bill.id[1]" class="d-flex space-btw">
-          <h3 class="m-0">{{ bill.id[0] }}</h3>
-          <span @click="bill.id[1] = !bill.id[1]">
-              <i class="fas fa-pen-square edit"></i>
-          </span>
+      <div class="w-400">
+        <div v-if="bill.name[1]" class="d-flex space-btw">
+          <h2 class="textHover" @click="reverseValue('name')">{{ bill.name[0] }}</h2>
         </div>
 
         <div v-else class="d-flex space-btw">
-          <input type="text" v-model="bill.id[0]">
-          <span @click="bill.id[1] = !bill.id[1]" class="d-flex items-center">
-              <i class="fas fa-check-square accept"></i>
-          </span>
+          <input ref="name" type="text"
+                 v-model="bill.name[0]" @keyup.enter="bill.name[1] = !bill.name[1]">
+        </div>
+      </div>
+
+
+      <div class="w-300">
+        <div v-if="bill.id[1]" class="d-flex space-btw">
+          <h3 class="m-0 textHover" @click="reverseValue('id')">{{ bill.id[0] }}</h3>
+        </div>
+
+        <div v-else class="d-flex space-btw">
+          <input ref="id" type="text" v-model="bill.id[0]" @keyup.enter="bill.id[1] = !bill.id[1]">
         </div>
       </div>
 
       <div class="w-300">
         <div v-if="bill.date[1]" class="d-flex space-btw">
-          <span class="m-0 d-flex items-center">{{ bill.date[0] }}</span>
-          <span @click="bill.date[1] = !bill.date[1]">
-              <i class="fas fa-pen-square edit"></i>
-          </span>
+          <span class="m-0 d-flex items-center textHover" @click="reverseValue('date')">{{ bill.date[0] }}</span>
+
         </div>
 
         <div v-else class="d-flex space-btw">
-          <input type="text" v-model="bill.date[0]">
-          <span @click="bill.date[1] = !bill.date[1]" class="d-flex items-center">
-              <i class="fas fa-check-square accept"></i>
-          </span>
+          <input ref="date" type="text" v-model="bill.date[0]" @keyup.enter="bill.date[1] = !bill.date[1]">
         </div>
       </div>
 
       <div class="mt-50 d-flex space-btw">
 
         <div class="w-400">
-          <h3>Pardavėjas</h3>
+          <h3 class="pl-10">Pardavėjas</h3>
 
           <div v-for="(item, index) in bill.seller" :key="index" class="mb-5">
             <div class="space-btw d-flex" v-if="item[1]">
-              <span>{{ item[0] }}</span>
+              <span class="textHover" @click="reverseValue('seller', index)">{{ item[0] }}</span>
               <div>
-                <span @click="bill.seller[index][1] = !bill.seller[index][1]">
-                  <i class="fas fa-pen-square edit"></i>
-                </span>
-                <span class="ml-10" v-if="index === bill.seller.length-1" @click="deleteSellerOrBuyer(true,index)">
+                <span class="ml-10" v-if="index === bill.seller.length-1"
+                      @click="deleteSellerOrBuyer(true, index)">
                   <i class="fas fa-trash-alt delete"></i>
                 </span>
               </div>
             </div>
             <div v-else class="d-flex space-btw">
-              <input type="text" class="w-400" v-model="bill.seller[index][0]">
-              <span class="ml-30 d-flex items-center" @click="bill.seller[index][1] = !bill.seller[index][1]">
-                <i class="fas fa-check-square accept"></i>
-              </span>
+              <input v-bind:ref="'seller'+index" type="text" class="w-400"
+                     v-model="bill.seller[index][0]"
+                     @keyup.enter="bill.seller[index][1] = !bill.seller[index][1]">
             </div>
           </div>
 
-          <div class="addOne mt-10" @click="addSellerOrBuyer(true)">
-            <i class="fas fa-plus-square"></i>
+          <div class="pl-10">
+            <div class="addOne mt-10" @click="addSellerOrBuyer(true)">
+              <i class="fas fa-plus-square"></i>
+            </div>
           </div>
 
 
         </div>
         <div class="w-400">
-          <h3>Pirkėjas</h3>
+          <h3 class="pl-10">Pirkėjas</h3>
 
 
           <div v-for="(item, index) in bill.buyer" :key="index" class="mb-5">
             <div class="space-btw d-flex" v-if="item[1]">
-              <span>{{ item[0] }}</span>
+              <span class="textHover" @click="reverseValue('buyer', index)">{{ item[0] }}</span>
               <div>
-                <span @click="bill.buyer[index][1] = !bill.buyer[index][1]">
-                  <i class="fas fa-pen-square edit"></i>
-                </span>
-                <span class="ml-10" v-if="index === bill.buyer.length-1" @click="deleteSellerOrBuyer(false, index)">
+                <span class="ml-10" v-if="index === bill.buyer.length-1"
+                      @click="deleteSellerOrBuyer(false, index)">
                   <i class="fas fa-trash-alt delete"></i>
                 </span>
               </div>
             </div>
             <div v-else class="d-flex space-btw">
-              <input type="text" class="w-400" v-model="bill.buyer[index][0]">
-              <span class="ml-30 d-flex items-center" @click="bill.buyer[index][1] = !bill.buyer[index][1]">
-                <i class="fas fa-check-square accept"></i>
-              </span>
+              <input v-bind:ref="'buyer'+index" type="text" class="w-400" v-model="bill.buyer[index][0]"
+                     @keyup.enter="bill.buyer[index][1] = !bill.buyer[index][1]">
             </div>
           </div>
 
-          <div class="addOne mt-10" @click="addSellerOrBuyer(false)">
-            <i class="fas fa-plus-square"></i>
+          <div class="pl-10">
+            <div class="addOne mt-10" @click="addSellerOrBuyer(false)">
+              <i class="fas fa-plus-square"></i>
+            </div>
           </div>
-
 
         </div>
 
       </div>
 
 
-      <div class="mt-50 mb-30">
+      <div class="mt-50 mb-30 pl-10">
 
 
         <table>
@@ -108,14 +104,10 @@
             <th v-for="(item, index) in bill.table.header" :key="index">
 
               <div v-if="bill.table.header[index][1]" class="d-flex space-btw items-center p-5">
-                <div>{{ item[0] }}</div>
+                <div class="textHover" @click="reverseValueDouble('table', 'header', index)">{{ item[0] }}</div>
 
                 <div class="d-flex">
                   <div class="d-flex items-center">
-                    <div @click="bill.table.header[index][1] = !bill.table.header[index][1]"
-                         class="d-flex">
-                      <i class="fas fa-pen-square edit"></i>
-                    </div>
                     <span class="ml-10 d-flex items-center"
                           v-if="index === bill.table.header.length-1 && bill.table.header.length > 2"
                           @click="addOrDeleteTableHeader(false, index)">
@@ -133,11 +125,9 @@
               </div>
 
               <div v-else class="d-flex space-btw p-5">
-                <input type="text" class="max-w-250" v-model="bill.table.header[index][0]">
-                <div @click="bill.table.header[index][1] = !bill.table.header[index][1]"
-                     class="ml-10 d-flex items-center">
-                  <i class="fas fa-check-square accept"></i>
-                </div>
+                <input v-bind:ref="'tableheader'+index" type="text" class="max-w-250"
+                       v-model="bill.table.header[index][0]"
+                       @keyup.enter="bill.table.header[index][1] = !bill.table.header[index][1]">
               </div>
 
             </th>
@@ -152,20 +142,18 @@
                   <span v-if="indexTwo === 0" @click="deleteTableRow(index)">
                     <i class="fas fa-trash-alt delete"></i>
                   </span>
-                  <span class="ml-10">{{ itemSecond[0] }}</span>
+                  <span class="ml-10 textHover"
+                        @click="reverseValueDouble('table', 'content', index, indexTwo)">{{ itemSecond[0] }}</span>
                 </div>
-                <span class="d-flex items-center" @click="bill.table.content[index][indexTwo][1] = !bill.table.content[index][indexTwo][1]">
-                    <i class="fas fa-pen-square edit"></i>
-                </span>
+
               </div>
 
-              <div v-if="!bill.table.content[index][indexTwo][1]" 
+              <div v-if="!bill.table.content[index][indexTwo][1]"
                    class="d-flex space-btw items-center">
-                <input type="text" :class="[indexTwo === 0 ? '' : 'max-w-250']"
+                <input v-bind:ref="'tablecontent'+index+indexTwo"
+                       type="text" :class="[indexTwo === 0 ? '' : 'max-w-250']"
+                       @keyup.enter="bill.table.content[index][indexTwo][1] = !bill.table.content[index][indexTwo][1]"
                        v-model="bill.table.content[index][indexTwo][0]">
-                <span class="d-flex items-center" @click="bill.table.content[index][indexTwo][1] = !bill.table.content[index][indexTwo][1]">
-                  <i class="fas fa-check-square accept"></i>
-                </span>
               </div>
 
             </td>
@@ -183,19 +171,12 @@
       <div class="d-flex flex-end">
         <div class="mr-5">
           <div class="d-flex space-btw w-300" v-if="bill.sum[1]">
-            <span>{{bill.sum[0]}}</span>
+            <div class="textHover text-center" @click="reverseValue('sum')">{{ bill.sum[0] }}</div>
 
-            <span @click="bill.sum[1] = !bill.sum[1]">
-                  <i class="fas fa-pen-square edit"></i>
-            </span>
           </div>
 
           <div v-if="!bill.sum[1]" class="d-flex">
-            <input type="text" v-model="bill.sum[0]">
-            <span class="ml-30 d-flex items-center"
-                  @click="bill.sum[1]= !bill.sum[1]">
-                  <i class="fas fa-check-square accept"></i>
-                </span>
+            <input ref="sum" type="text" v-model="bill.sum[0]" @keyup.enter="bill.sum[1]= !bill.sum[1]">
           </div>
         </div>
       </div>
@@ -203,7 +184,7 @@
       <div class="mt-50">
         <div class="d-flex mb-30">
           <input class="checkBox" type="checkbox" v-model="bill.showSignatures">
-          <span class="ml-10">Laukeliai vardams ir parašams</span>
+          <span class="ml-10" @click="bill.showSignatures = !bill.showSignatures">Laukeliai vardams ir parašams</span>
         </div>
 
         <div class="d-flex space-btw" v-if="bill.showSignatures">
@@ -214,18 +195,12 @@
             <div class="mb-30">
 
               <div class="d-flex space-btw" v-if="bill.signatures.seller[1]">
-                <span>{{bill.signatures.seller[0]}}</span>
-
-                <span @click="bill.signatures.seller[1] = !bill.signatures.seller[1]">
-                  <i class="fas fa-pen-square edit"></i>
-                </span>
+                <span class="textHover" @click="reverseSignatures(true)">{{ bill.signatures.seller[0] }}</span>
               </div>
 
               <div v-if="!bill.signatures.seller[1]" class="d-flex">
-                <input type="text" v-model="bill.signatures.seller[0]">
-                <span class="ml-30 d-flex items-center" @click="bill.signatures.seller[1] = !bill.signatures.seller[1]">
-                  <i class="fas fa-check-square accept"></i>
-                </span>
+                <input ref="seller" type="text" v-model="bill.signatures.seller[0]"
+                       @keyup.enter="bill.signatures.seller[1] = !bill.signatures.seller[1]">
               </div>
 
             </div>
@@ -242,19 +217,12 @@
             </div>
             <div class="mb-30">
               <div class="d-flex space-btw" v-if="bill.signatures.buyer[1]">
-                <span>{{bill.signatures.buyer[0]}}</span>
-
-                <span @click="bill.signatures.buyer[1] = !bill.signatures.buyer[1]">
-                  <i class="fas fa-pen-square edit"></i>
-                </span>
+                <span class="textHover" @click="reverseSignatures(false)">{{ bill.signatures.buyer[0] }}</span>
               </div>
 
               <div v-if="!bill.signatures.buyer[1]" class="d-flex">
-                <input type="text" v-model="bill.signatures.buyer[0]">
-                <span class="ml-30 d-flex items-center"
-                      @click="bill.signatures.buyer[1] = !bill.signatures.buyer[1]">
-                  <i class="fas fa-check-square accept"></i>
-                </span>
+                <input ref="buyer" type="text" v-model="bill.signatures.buyer[0]"
+                       @keyup.enter="bill.signatures.buyer[1] = !bill.signatures.buyer[1]">
               </div>
             </div>
             <div class="signatures">
@@ -277,7 +245,7 @@
 
 
         <span v-if="buttonActive">Atsisiųsti sąskaitą - PDF</span>
-        <span v-else>Šį veiksmą atlikti galėsite po {{counter}} sekundžių</span>
+        <span v-else>Šį veiksmą atlikti galėsite po {{ counter }} sekundžių</span>
 
       </div>
     </div>
@@ -294,9 +262,10 @@ export default {
   components: {
     GeneratedBill
   },
-  data() {
+  data: () => {
     return {
       bill: {
+        name: ["PVM SĄSKAITA FAKTŪRA", true],
         id: ["Serija: N Nr. 3", true],
         date: ["Data: 2020.02.03", true],
         seller: [
@@ -331,10 +300,48 @@ export default {
     }
   },
   methods: {
-    getBody() {
-      let cn = document.getElementById('cn')
-      console.log(cn)
+
+    reverseSignatures(seller) {
+      setTimeout(() => {
+        this.$refs[seller ? 'seller' : 'buyer'].focus()
+      }, 100)
+      return this.bill.signatures[seller ? 'seller' : 'buyer'][1] = !this.bill.signatures[seller ? 'seller' : 'buyer'][1]
     },
+    reverseValue(name, index) {
+      setTimeout(() => {
+        if (typeof index === 'number') {
+          this.$refs[name + index].focus()
+        } else {
+          this.$refs[name].focus()
+        }
+      }, 100)
+
+      if (typeof index === 'number') {
+        return this.bill[name][index][1] = !this.bill[name][index][1]
+      } else {
+        return this.bill[name][1] = !this.bill[name][1]
+      }
+    },
+    reverseValueDouble(first, second, index, indexTwo) {
+
+      setTimeout(() => {
+        if (typeof indexTwo === 'number') {
+          this.$refs[first + second + index + indexTwo].focus()
+        } else {
+          this.$refs[first + second + index].focus()
+        }
+
+      }, 100)
+
+      if (typeof indexTwo === 'number') {
+        return this.bill[first][second][index][indexTwo][1] = !this.bill[first][second][index][indexTwo][1]
+      } else {
+        return this.bill[first][second][index][1] = !this.bill[first][second][index][1]
+      }
+
+
+    },
+
     deleteSellerOrBuyer(seller, index) {
       seller ?
           this.bill.seller.splice(index, 1) :
@@ -342,16 +349,16 @@ export default {
     },
     addSellerOrBuyer(seller) {
       if (seller) {
-        this.bill.seller.push(["---", true])
+        this.bill.seller.push(["-", true])
       } else {
-        this.bill.buyer.push(["---", true])
+        this.bill.buyer.push(["-", true])
       }
     },
     addOrDeleteTableHeader(add, index) {
       if (add) {
-        this.bill.table.header.push(["---", true])
+        this.bill.table.header.push(["-", true])
         this.bill.table.content.map((x, index) => {
-          this.bill.table.content[index].push(["---", true])
+          this.bill.table.content[index].push(["-", true])
         })
       } else {
         this.bill.table.header.splice(index, 1)
@@ -364,7 +371,7 @@ export default {
       let newRow = []
 
       this.bill.table.header.map(() => {
-        newRow.push(["---", true])
+        newRow.push(["-", true])
       })
 
       this.bill.table.content.push(newRow)
@@ -373,14 +380,14 @@ export default {
       this.bill.table.content.splice(index, 1)
     },
     generateBill() {
-      if(this.buttonActive) {
+      if (this.buttonActive) {
         this.buttonActive = false
 
         let timer = () => {
-          if(this.counter > 0) {
+          if (this.counter > 0) {
             this.counter--
             setTimeout(() => {
-              if(this.counter === 0) {
+              if (this.counter === 0) {
                 this.buttonActive = true
                 return this.counter = 30
               }
@@ -394,7 +401,7 @@ export default {
         return this.callApi()
       }
     },
-    async callApi(){
+    async callApi() {
       let billHtml = document.getElementById('bill')
       let setHtml = new URLSearchParams({
         'html': billHtml.outerHTML,
@@ -408,7 +415,7 @@ export default {
         body: setHtml
       });
 
-      if(res.status === 200) {
+      if (res.status === 200) {
         let blob = await res.blob()
 
         let url = window.URL.createObjectURL(blob);
@@ -431,12 +438,39 @@ export default {
         localStorage.setItem('bill', billAsString)
       },
       deep: true
+    },
+    "bill.table.content": {
+      handler: function (val) {
+        let totalSum = 0
+        val.map(item => {
+          let num = ""
+          for (let i = 0; i < item[item.length-1][0].length; i++) {
+            let symbol = item[item.length-1][0][i].replace(',', ".")
+
+            if(symbol === ".") {
+              num += symbol
+            } else if ( !isNaN(Number(symbol)) ) {
+              num += symbol
+            }
+          }
+          totalSum += Number(num)
+        })
+        this.bill.sum[0] = `Galutinė suma: ${totalSum}€`
+      },
+      deep: true
     }
   },
   mounted() {
-    if(localStorage.getItem('bill') !== null) {
+    if (localStorage.getItem('bill') !== 'null') {
       this.bill = JSON.parse(localStorage.getItem('bill'))
     }
+
+    const date = new Date()
+    const year = date.getFullYear()
+    const month = date.getUTCMonth()
+    const day = date.getDate()
+
+    this.bill.date[0] = `Data: ${year}.${month}.${day}`
   }
 }
 </script>
@@ -547,7 +581,7 @@ th {
   font-size: 20px;
 }
 
-.generateButton:hover{
+.generateButton:hover {
   background-color: #767676;
 }
 
@@ -600,6 +634,10 @@ th {
   flex-direction: column;
 }
 
+.pl-10 {
+  padding-left: 10px;
+}
+
 .p-5 {
   padding: 10px 10px;
 }
@@ -634,6 +672,21 @@ th {
 
 .mt-10 {
   margin-top: 10px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.textHover {
+  border-radius: 5px;
+  padding: 0 10px;
+  cursor: pointer;
+  min-width: 100px;
+}
+
+.textHover:hover {
+  background-color: #bababa;
 }
 
 </style>
