@@ -461,7 +461,7 @@ export default {
     }
   },
   mounted() {
-    if (localStorage.getItem('bill') !== 'null') {
+    if (localStorage.getItem('bill')) {
       this.bill = JSON.parse(localStorage.getItem('bill'))
     }
 
