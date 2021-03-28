@@ -8,14 +8,14 @@
 
     <div style="display: flex; margin-top: 20px">
       <div id="sellerInfo" style="width: 50%">
-        <h4>Pardavėjas</h4>
+        <h4>{{bill.participants.seller[0]}}</h4>
         <div v-for="(item, index) in bill.seller" :key="index">
           {{item[0]}}
         </div>
       </div>
 
       <div id="buyerInfo" style="width: 50%">
-        <h4>Pirkėjas</h4>
+        <h4>{{ bill.participants.buyer[0] }}</h4>
         <div v-for="(item, index) in bill.buyer" :key="index">
           {{item[0]}}
         </div>
@@ -46,18 +46,18 @@
     v-if="bill.showSignatures">
 
       <div style="width: 200px">
-        Sąskaitą išrašė:
+        {{ bill.props.seller[0] }}
         <div style="padding: 30px 0px" :style="signatureSpace(true)">{{bill.signatures.seller[0]}}</div>
         <div style="border-bottom: 1px solid black; margin-bottom: 5px"></div>
-        <div><small>(Pareigos, vardas, pavardė)</small></div>
+        <div><small>{{ bill.props.sellerSign[0] }}</small></div>
       </div>
 
       <div style="width: 200px">
-        Sąskaitą priemė:
+        {{ bill.props.buyer[0] }}
         <div style="padding: 30px 0px" :style="signatureSpace(false)"
         >{{bill.signatures.buyer[0]}}</div>
         <div style="border-bottom: 1px solid black; margin-bottom: 5px"></div>
-        <div><small>(Pareigos, vardas, pavardė)</small></div>
+        <div><small>{{ bill.props.buyerSign[0] }}</small></div>
       </div>
 
     </div>

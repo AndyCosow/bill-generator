@@ -38,7 +38,16 @@
       <div class="mt-50 d-flex space-btw">
 
         <div class="w-400">
-          <h3 class="pl-10">Pardavėjas</h3>
+          <h3 class="pl-10 textHover"
+              @click="reverseParticipants(true)"
+              v-if="bill.participants.seller[1]">{{ bill.participants.seller[0] }}
+          </h3>
+          <div v-else class="d-flex space-btw">
+            <input ref="participantOne" type="text" class="w-400"
+                   v-model="bill.participants.seller[0]"
+                   @keyup.enter="bill.participants.seller[1] = !bill.participants.seller[1]">
+          </div>
+
 
           <div v-for="(item, index) in bill.seller" :key="index" class="mb-5">
             <div class="space-btw d-flex" v-if="item[1]">
@@ -66,7 +75,15 @@
 
         </div>
         <div class="w-400">
-          <h3 class="pl-10">Pirkėjas</h3>
+          <h3 class="pl-10 textHover"
+              @click="reverseParticipants(false)"
+              v-if="bill.participants.buyer[1]">{{ bill.participants.buyer[0] }}
+          </h3>
+          <div v-else class="d-flex space-btw">
+            <input ref="participantTwo" type="text" class="w-400"
+                   v-model="bill.participants.buyer[0]"
+                   @keyup.enter="bill.participants.buyer[1] = !bill.participants.buyer[1]">
+          </div>
 
 
           <div v-for="(item, index) in bill.buyer" :key="index" class="mb-5">
@@ -189,9 +206,17 @@
 
         <div class="d-flex space-btw" v-if="bill.showSignatures">
           <div>
-            <div class="mb-30">
-              Sąskaitą išrašė:
+            <div class="mb-30 textHover"
+                 @click="reverseProps('seller', 'propSeller')"
+                 v-if="bill.props.seller[1]">
+              {{bill.props.seller[0]}}
             </div>
+
+            <div v-else class="d-flex space-btw mb-30">
+              <input ref="propSeller" type="text" v-model="bill.props.seller[0]"
+                     @keyup.enter="bill.props.seller[1] = !bill.props.seller[1]">
+            </div>
+
             <div class="mb-30">
 
               <div class="d-flex space-btw" v-if="bill.signatures.seller[1]">
@@ -205,16 +230,31 @@
 
             </div>
             <div class="signatures">
-              <small>
-                (pareigos, vardas, pavardė, parašas)
+              <small class="textHover"
+                     v-if="bill.props.sellerSign[1]"
+                     @click="reverseProps('sellerSign', 'propSellerSign')">
+                {{bill.props.sellerSign[0]}}
               </small>
+              <div v-else class="d-flex space-btw mb-30">
+                <input ref="propSellerSign" type="text" class="w-400" v-model="bill.props.sellerSign[0]"
+                       @keyup.enter="bill.props.sellerSign[1] = !bill.props.sellerSign[1]">
+              </div>
             </div>
           </div>
 
           <div>
-            <div class="mb-30">
-              Sąskaitą priėmė:
+            <div class="mb-30 textHover"
+                 @click="reverseProps('buyer', 'propsBuyer')"
+                 v-if="bill.props.buyer[1]">
+              {{bill.props.buyer[0]}}
             </div>
+
+            <div v-else class="d-flex space-btw mb-30">
+              <input ref="propsBuyer" type="text" v-model="bill.props.buyer[0]"
+                     @keyup.enter="bill.props.buyer[1] = !bill.props.buyer[1]">
+            </div>
+
+
             <div class="mb-30">
               <div class="d-flex space-btw" v-if="bill.signatures.buyer[1]">
                 <span class="textHover" @click="reverseSignatures(false)">{{ bill.signatures.buyer[0] }}</span>
@@ -226,9 +266,15 @@
               </div>
             </div>
             <div class="signatures">
-              <small>
-                (pareigos, vardas, pavardė, parašas)
+              <small class="textHover"
+                     v-if="bill.props.buyerSign[1]"
+                     @click="reverseProps('buyerSign', 'propBuyerSign')">
+                {{bill.props.buyerSign[0]}}
               </small>
+              <div v-else class="d-flex space-btw mb-30">
+                <input ref="propBuyerSign" type="text" class="w-400" v-model="bill.props.buyerSign[0]"
+                       @keyup.enter="bill.props.buyerSign[1] = !bill.props.buyerSign[1]">
+              </div>
             </div>
           </div>
         </div>
@@ -268,6 +314,10 @@ export default {
         name: ["PVM SĄSKAITA FAKTŪRA", true],
         id: ["Serija: N Nr. 3", true],
         date: ["Data: 2020.02.03", true],
+        participants: {
+          seller: ["Pardavėjas", true],
+          buyer:  ["Pirkėjas", true]
+        },
         seller: [
           ["Ind. veiklos numeris: 55584587", true],
           ["Jonas Bulijonas", true],
@@ -290,6 +340,13 @@ export default {
         },
         sum: ["Galutine suma: 4500€", true],
         showSignatures: false,
+        props: {
+          seller: ["Sąskaitą išrašee:", true],
+          sellerSign: ["(pareigos, vardas, pavardė, parašas)", true],
+          buyer: ["Sąskaitą priėmėasd:", true],
+          buyerSign: ["(pareigos, vardas, pavardė, parašas)", true],
+
+        },
         signatures: {
           seller: ["Jonas Bulijonas", true],
           buyer: ["Tomas Gnomas", true],
@@ -301,6 +358,21 @@ export default {
   },
   methods: {
 
+    reverseProps(val, ref) {
+      setTimeout(() => {
+        this.$refs[ref].focus()
+      }, 100)
+      return this.bill.props[val][1] = !this.bill.props[val][1]
+    },
+
+    reverseParticipants(first) {
+      setTimeout(() => {
+        this.$refs[first ? "participantOne" : "participantTwo"].focus()
+      }, 100)
+
+      return this.bill.participants[first ? 'seller' : 'buyer'][1]
+          = !this.bill.participants[first ? 'seller' : 'buyer'][1]
+    },
     reverseSignatures(seller) {
       setTimeout(() => {
         this.$refs[seller ? 'seller' : 'buyer'].focus()
@@ -444,12 +516,12 @@ export default {
         let totalSum = 0
         val.map(item => {
           let num = ""
-          for (let i = 0; i < item[item.length-1][0].length; i++) {
-            let symbol = item[item.length-1][0][i].replace(',', ".")
+          for (let i = 0; i < item[item.length - 1][0].length; i++) {
+            let symbol = item[item.length - 1][0][i].replace(',', ".")
 
-            if(symbol === ".") {
+            if (symbol === ".") {
               num += symbol
-            } else if ( !isNaN(Number(symbol)) ) {
+            } else if (!isNaN(Number(symbol))) {
               num += symbol
             }
           }
@@ -470,7 +542,7 @@ export default {
     const month = date.getUTCMonth()
     const day = date.getDate()
 
-    this.bill.date[0] = `Data: ${year}.${month}.${day}`
+    this.bill.date[0] = `Data: ${year}.${month+1}.${day}`
   }
 }
 </script>
@@ -686,7 +758,7 @@ th {
 }
 
 .textHover:hover {
-  background-color: #bababa;
+  background-color: #d0d0d0;
 }
 
 </style>
