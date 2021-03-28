@@ -42,6 +42,15 @@
       </div>
     </div>
 
+    <div v-if="bill.showNotes" style="margin-top: 100px; max-width: 770px">
+      <div style="margin-bottom: 20px">
+        {{bill.notes.title[0]}}
+      </div>
+      <div>
+        {{bill.notes.value[0]}}
+      </div>
+    </div>
+
     <div style="display: flex; justify-content: space-between; margin-top: 100px"
     v-if="bill.showSignatures">
 

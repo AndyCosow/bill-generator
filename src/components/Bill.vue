@@ -198,7 +198,41 @@
         </div>
       </div>
 
-      <div class="mt-50">
+      <div class="mt-50 ml-10">
+        <div class="d-flex mb-30">
+          <input class="checkBox" type="checkbox" v-model="bill.showNotes">
+          <span class="ml-10" @click="bill.showNotes = !bill.showNotes">Papildomi įrašai</span>
+        </div>
+
+        <div v-if="bill.showNotes">
+          <div class="mb-30 textHover w-300"
+               @click="reverseNotes('title', 'notesTitle')"
+               v-if="bill.notes.title[1]">
+            {{bill.notes.title[0]}}
+          </div>
+
+          <div v-else class="d-flex space-btw mb-30">
+            <input ref="notesTitle" type="text" v-model="bill.notes.title[0]"
+                   @keyup.enter="bill.notes.title[1] = !bill.notes.title[1]">
+          </div>
+
+
+          <div class="mb-30 textHover"
+               @click="reverseNotes('value', 'notesValue')"
+               v-if="bill.notes.value[1]">
+            {{bill.notes.value[0]}}
+          </div>
+
+          <div v-else class="d-flex space-btw mb-30">
+            <textarea ref="notesValue" class="textArea" v-model="bill.notes.value[0]"
+                      @keyup.enter="bill.notes.value[1] = !bill.notes.value[1]"></textarea>
+          </div>
+
+
+        </div>
+      </div>
+
+      <div class="mt-50 ml-10">
         <div class="d-flex mb-30">
           <input class="checkBox" type="checkbox" v-model="bill.showSignatures">
           <span class="ml-10" @click="bill.showSignatures = !bill.showSignatures">Laukeliai vardams ir parašams</span>
@@ -340,6 +374,11 @@ export default {
         },
         sum: ["Galutine suma: 4500€", true],
         showSignatures: false,
+        showNotes: false,
+        notes: {
+          title: ['Pastabos', true],
+          value: ["Pastabos apie esama sąskaitą", true]
+        },
         props: {
           seller: ["Sąskaitą išrašee:", true],
           sellerSign: ["(pareigos, vardas, pavardė, parašas)", true],
@@ -357,6 +396,14 @@ export default {
     }
   },
   methods: {
+
+    reverseNotes(val, ref) {
+      setTimeout(() => {
+        this.$refs[ref].focus()
+      }, 100)
+      return this.bill.notes[val][1] = !this.bill.notes[val][1]
+    },
+
 
     reverseProps(val, ref) {
       setTimeout(() => {
@@ -760,5 +807,15 @@ th {
 .textHover:hover {
   background-color: #d0d0d0;
 }
+
+.textArea {
+  width: 100%;
+  padding: 10px;
+  height: 50px;
+  background-color: #656565;
+  color: white;
+}
+
+
 
 </style>
