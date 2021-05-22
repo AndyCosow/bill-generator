@@ -7,6 +7,7 @@ const rateLimit = require("express-rate-limit");
 // const helmet = require("helmet");
 const cors = require('cors')
 
+let counter = 0
 const port = 3322
 app.listen(port)
 app.use(bodyParser.urlencoded({extended: true, limit: "1mb"}));
@@ -36,6 +37,8 @@ const apiLimiter = rateLimit({
 });
 
 app.post('/generate', apiLimiter, (req, res) => {
+    counter++
+    console.log("bills generated: "+counter)
     // // Website you wish to allow to connect
     // res.setHeader('Access-Control-Allow-Origin', 'http://bills.lt/');
     //
