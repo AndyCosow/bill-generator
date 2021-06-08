@@ -1,3 +1,3 @@
 module.exports = {
-    publicPath: "/generatorius/"
-}
+  publicPath: '/generator/'
+};
